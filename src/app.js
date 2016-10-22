@@ -1,10 +1,10 @@
-import React from 'react'
 import ReactDOM from "react-dom"
+
 
 import TestComponent from "./components/TestComponent.js"
 
 
 ReactDOM.render(
-  <Greeting name="Bob!!!!!!CHANGES!!!!!!!!!!!!!!!!" />,
+  <TestComponent name="Bob!!!!!!!!!!!!!!!!!!!!!" />,
   document.getElementById("AppContainer")
 );
