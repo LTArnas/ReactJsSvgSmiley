@@ -18,12 +18,15 @@ This project probably would be better served as a fork, or guide, to make your o
     - `git pull https://github.com/LTArnas/ReactjsBoilerplate.git`
 - Initialize NPM.
     - `npm init`
+
     > [It will pick up the package.json from the boilerplate. A strictly additive operation.](https://docs.npmjs.com/cli/init#description)
 - Get the dependencies.
     - `npm update`
+
     > Of course, feel free to add more dependencies to `package.json` before you perform the `update` operation. Or, use `npm install` afterwards.
 - Get typings.
     - `typings install`
+
     > Afterwards, you can install more, of course.
 - You're basically ready, minus any further per-project stuff. :)
 
@@ -32,6 +35,7 @@ This project probably would be better served as a fork, or guide, to make your o
 So you better know what's going on/what you're getting...
 
 - [NPM](https://www.npmjs.com/) is used to manage external tools/packages/dependencies, like everywhere else.
+
     > I don't currently use [Browserify](http://browserify.org/) to seperate the management of app dependencies vs environment/tool dependencies. ...I think some people like to do that...? But I try to minimize the amount of tools and such if I can.
 - [Gulp](http://gulpjs.com/) is the automation/build workhorse.
 - [Babel](https://babeljs.io/) is used as a transpiler.
@@ -47,6 +51,7 @@ So you better know what's going on/what you're getting...
 
         > [Hot Module Replacement](https://webpack.github.io/docs/hot-module-replacement.html) is set up.
 - [Typings](https://github.com/typings/typings) is used like NPM, but for TypeScript Definition files (`.d.ts`).
+
     > Actually this is so I get intellisense for external JavaScript.
     E.g. React and ReactDOM.
     It might be too specific use case, but... I need it, and the whole point of this is to make my life easier. Sorry. :)
