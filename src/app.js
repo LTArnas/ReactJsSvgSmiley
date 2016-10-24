@@ -1,7 +1,8 @@
 import ReactDOM from "react-dom";
 
 import SvgRoot from "./components/SvgRoot";
-import TestComponent from "./components/TestComponent.js";
+import TestComponent from "./components/TestComponent";
+import PathData from "./path";
 import React from "react";
 export default class App extends React.Component {
   constructor(props) {
@@ -31,6 +32,7 @@ export default class App extends React.Component {
                 stroke="red"
                 strokeWidth="3"
                 ref={(el) => this.mouthElement = el} />
+        <path d={this.props.testPathData} stroke="blue" strokeWidth="3" />
       </SvgRoot>
     );
   }
@@ -63,9 +65,17 @@ let timing = {
   fill: "both",
   iterations: Infinity
 };
-
+/*
+let myPathData = new PathData().move(0,0).lineVertical(10).lineHorizontal(10).lineVertical(-10).closePath();
+*/
+let myPathData = new PathData()
+                              .move(10,10)
+                              .line(50,50)
+                              .move(80, 20, true)
+                              .line(-90,80);
+console.log(myPathData);
 
 ReactDOM.render(
-  <App skullKeyframes={skullKeyframes} mouthKeyframes={mouthKeyframes} leftEyeKeyframes={leftEyeKeyframes} rightEyeKeyframes={rightEyeKeyframes} timing={timing} />,
+  <App testPathData={myPathData.data} skullKeyframes={skullKeyframes} mouthKeyframes={mouthKeyframes} leftEyeKeyframes={leftEyeKeyframes} rightEyeKeyframes={rightEyeKeyframes} timing={timing} />,
   document.getElementById("AppContainer")
 );
