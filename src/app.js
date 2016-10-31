@@ -1,15 +1,25 @@
 import ReactDOM from "react-dom";
 
-import SvgRoot from "./components/SvgRoot";
-import TestComponent from "./components/TestComponent";
-import PathData from "./path";
+import SvgRoot from "./components/svg/SvgRoot";
+import PathData from "./PathData";
+import Morph from "./Morph";
 import React from "react";
+
+import Smiley from "./components/smiley/Smiley"
 export default class App extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      mousePositionX : "50%",
+      mousePositionY : "50%"
+    };
+
+    this.onMouseMoveCapture = this.onMouseMoveCapture.bind(this);
   }
 
   componentDidMount() {
+    //this.tingAnimation = this.tingElement.animate(this.props.tingKeyframes, this.props.timing);
+    /*
     this.skullAnimation = this.skullElement.animate(this.props.skullKeyframes, this.props.timing);
     this.leftEyeAnimation = this.leftEyeElement.animate(this.props.leftEyeKeyframes, this.props.timing);
     this.rightEyeAnimation = this.rightEyeElement.animate(this.props.rightEyeKeyframes, this.props.timing);
@@ -18,27 +28,69 @@ export default class App extends React.Component {
     //this.leftEyeAnimation.pause();
     //this.rightEyeAnimation.pause();
     //this.mouthAnimation.pause();
+
+    this.toPathArray = PathData.pathConvert(this.props.toPathData);
+    this.animationOmgId = setInterval(() => this.animationOmg(), 100);
+    */
+  }
+
+  componentWillUnmount() {
+    /*
+    clearInterval(this.animationOmgId);
+    */
+  }
+/*
+  animationOmg() {
+    this.setState((prevState, props) => {
+      let fromPath = PathData.pathConvert(prevState.animatedPathData);
+      let toPath = PathData.pathConvert(props.toPathData);
+      let newPath = [];
+      for (let i = 0; i < fromPath.length; i++) {
+        newPath.push(Morph.commandLinear(fromPath[i], toPath[i], 0.05));
+      }
+      let newAnimatedPath = "";
+      for (let c = 0; c < newPath.length; c++) {
+        newAnimatedPath += newPath[c].join(" ")+" ";
+      }
+      return {animatedPathData: newAnimatedPath};
+    });
+  }
+*/
+// Ok, so we just draw a circle for the eye, then we use gradient to do iris, and move it around via that. ...the cool thing is, that this method lets us define the gradient elsewhere, and change it.
+
+  onMouseMoveCapture(e) {
+        let x = (e.clientX / window.innerWidth);
+        let y = (e.clientY / window.innerHeight);
+        this.setState(() => {
+          return {
+            mousePositionX : x,
+            mousePositionY : y
+          };
+        });
   }
 
   render() {
     return (
-      <SvgRoot style={{borderStyle:"solid"}}>
-        <circle cx="50" cy="50" r="50" fill="#ff9900" ref={(el) => this.skullElement = el} />
-        <circle cx="20" cy="30" r="5" fill="black" ref={(el) => this.leftEyeElement = el} />
-        <circle cx="80" cy="30" r="5" fill="grey" ref={(el) => this.rightEyeElement = el} />
-        <path d="M 19 50
-                a 10 10 0 0 0 70 0
-                z"
-                stroke="red"
-                strokeWidth="3"
-                ref={(el) => this.mouthElement = el} />
-        <path d={this.props.testPathData} stroke="blue" strokeWidth="3" />
-      </SvgRoot>
+      <div onMouseMove={this.onMouseMoveCapture}
+            style={{
+              borderStyle: "solid",
+              width: window.innerWidth,
+              height: window.innerHeight
+            }}
+            ref={(el) => this.tingElement = el}>
+        <SvgRoot>
+          <Smiley eyeX={this.state.mousePositionX}
+                  eyeY={this.state.mousePositionY}/>
+        </SvgRoot>
+      </div>
     );
   }
 }
 
-//let skullKeyframes = {transform: "scale(0.9, 0.9)"};
+let tingKeyframes = [
+  {transform: "rotateY(1deg)", transformOrigin: "center"},
+  {transform: "rotateY(180deg)", transformOrigin: "center"}
+];
 
 let skullKeyframes = [
   {transform: "rotateY(1deg)", transformOrigin: "center"},
@@ -51,13 +103,13 @@ let mouthKeyframes = [
 ];
 
 let leftEyeKeyframes = [
-  {transform: "translate(1%,1%)"},
-  {transform: "translate(70%,-100%)"}
+  {transform: "translate(0px,0px)rotateY(1deg)",transformOrigin: "center"},
+  {transform: "translate(20px,0px)rotateY(180deg)",transformOrigin: "center"}
 ];
 
 let rightEyeKeyframes = [
-  {transform: "translate(1%,1%)"},
-  {transform: "translate(-70%,70%)"}
+  {transform: "translate(0px,0px)rotateY(1deg)",transformOrigin: "center"},
+  {transform: "translate(-20px,0px)rotateY(180deg)",transformOrigin: "center"}
 ];
 
 let timing = {
@@ -65,17 +117,8 @@ let timing = {
   fill: "both",
   iterations: Infinity
 };
-/*
-let myPathData = new PathData().move(0,0).lineVertical(10).lineHorizontal(10).lineVertical(-10).closePath();
-*/
-let myPathData = new PathData()
-                              .move(10,10)
-                              .line(50,50)
-                              .move(80, 20, true)
-                              .line(-90,80);
-console.log(myPathData);
 
 ReactDOM.render(
-  <App testPathData={myPathData.data} skullKeyframes={skullKeyframes} mouthKeyframes={mouthKeyframes} leftEyeKeyframes={leftEyeKeyframes} rightEyeKeyframes={rightEyeKeyframes} timing={timing} />,
+  <App tingKeyframes={tingKeyframes} timing={timing} />,
   document.getElementById("AppContainer")
 );

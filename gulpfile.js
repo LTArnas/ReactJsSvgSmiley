@@ -18,10 +18,15 @@ gulp.task("dev-server", function(done) {
     new webpackDevServer(webpack(webpackConfigDebug), {
         contentBase: "build/", // the folder with the content to serve.
         inline: true,
+        //quiet: true,
         //hot: true, // We add the plugin manually, in the config!
         //headers: {},
-        //stats: {colors: true }
-        noInfo: false
+        stats: {colors: true },
+        noInfo: false,
+        warchOptions: {
+            aggregateTimeout: 1000, // Delay rebuild after first change. Ms.
+            poll: 1000 // Use polling interval. Ms.
+        }
     }).listen(8080, "localhost", function(err) {
         if(err) throw err;
         done(err);
